@@ -9,7 +9,7 @@ import pathlib
 import urllib.parse
 
 # ===================== CONFIG (burayı doldurun) =====================
-SITE_URL = "https://hanatik.com.tr"      # yayın adresi (sonunda / yok); GitHub Pages ise onun adresi
+SITE_URL = "https://kandemirtuncay18-jpg.github.io/hanatik-web"      # yayın adresi (sonunda / yok); GitHub Pages ise onun adresi
 PHONE = ""                               # örn. "+90 212 000 00 00"
 EMAIL = ""                               # örn. "info@hanatik.com.tr"
 ADDRESS = ""                             # örn. "Organize Sanayi Bölgesi, 1. Cadde No:5, Gebze/Kocaeli"
@@ -348,9 +348,9 @@ def extras():
     (OUT / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n", encoding="utf-8")
     (OUT / "404.html").write_text(
         '<!DOCTYPE html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
-        '<title>404 | HAN ATIK A.Ş.</title><link rel="stylesheet" href="/style.css"></head><body>'
+        '<title>404 | HAN ATIK A.Ş.</title><link rel="stylesheet" href="' + SITE_URL + '/style.css"></head><body>'
         '<section><div class="wrap" style="text-align:center"><h2>404</h2><p class="lead" style="margin:0 auto 20px">Sayfa bulunamadı / Page not found</p>'
-        '<a class="btn btn-green" href="/">Ana sayfa / Home</a></div></section></body></html>', encoding="utf-8")
+        '<a class="btn btn-green" href="' + SITE_URL + '/">Ana sayfa / Home</a></div></section></body></html>', encoding="utf-8")
 
 
 if __name__ == "__main__":
@@ -358,3 +358,4 @@ if __name__ == "__main__":
     build_lang("en")
     extras()
     print("tamam: TR + EN + sitemap/robots/404/favicon")
+
