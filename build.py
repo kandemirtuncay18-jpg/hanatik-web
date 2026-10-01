@@ -35,6 +35,14 @@ def slug(key, lang):
     return f"{EN_SLUG[key] if lang == 'en' else key}.html"
 
 
+def asset(name):
+    return (OUT / "assets" / name).exists()
+
+
+def gallery_files():
+    return sorted(f.name for f in (OUT / "assets").glob("gallery-*") if f.suffix.lower() in (".jpg", ".jpeg", ".png", ".webp"))
+
+
 def build_lang(lang):
     en = lang == "en"
     T = lambda tr, e: e if en else tr
@@ -68,7 +76,11 @@ def build_lang(lang):
     # ---------------- sayfa gövdeleri ----------------
     bodies = {}
 
-    home_hero = f"""<div class="hero"><div class="wrap">
+    has_vid = asset("hero.mp4")
+    poster = f' poster="{root}assets/hero.jpg"' if asset("hero.jpg") else ""
+    vid = (f'<video class="hero-video" autoplay muted loop playsinline preload="metadata"{poster} aria-hidden="true">'
+           f'<source src="{root}assets/hero.mp4" type="video/mp4"></video>') if has_vid else ""
+    home_hero = f"""<div class="hero{' has-video' if has_vid else ''}">{vid}<div class="wrap">
 <span class="badge">{T("Tehlikeli &amp; Tehlikesiz Atık Çözümleri", "Hazardous &amp; Non-Hazardous Waste Solutions")}</span>
 <h1>{T("Atıklarınız güvenli ellerde: toplama, nakliye, bertaraf.", "Your waste in safe hands: collection, transport, disposal.")}</h1>
 <p>{T(f"{NAME}, sanayi, sağlık ve inşaat sektörlerine mevzuata uygun atık nakliyesi ve atık yönetimi hizmeti sunar.",
@@ -87,6 +99,10 @@ def build_lang(lang):
              (T("Nakliye", "Transport"), T("Güvenli taşıma ve takip.", "Safe transport with tracking.")),
              (T("Bertaraf", "Disposal"), T("Lisanslı tesiste bertaraf/geri kazanım ve raporlama.", "Disposal/recovery at a licensed facility, with reporting."))]
     steps_html = "".join(card("", a, b, "step") for a, b in steps)
+
+    gl = gallery_files()
+    gallery = (f'''<section><div class="wrap"><span class="eyebrow">{T("Galeri", "Gallery")}</span><h2>{T("Çalışmalarımızdan", "From our work")}</h2>
+<div class="gallery">{"".join(f'<img src="{root}assets/{g}" alt="{NAME} - {T("atık yönetimi", "waste management")}" loading="lazy">' for g in gl)}</div></div></section>''') if gl else ""
 
     bodies["index"] = (home_hero, f"""
 <section><div class="wrap">
@@ -122,7 +138,7 @@ def build_lang(lang):
 <details><summary>{T("Atığımın tehlikeli olup olmadığını nasıl öğrenirim?", "How do I know if my waste is hazardous?")}</summary><p>{T("Atık kodu (Atık Yönetimi Yönetmeliği listesi) ve gerekirse laboratuvar analizi ile belirlenir. Ekibimiz bu konuda size yardımcı olur.", "It is determined by the waste code (list in the Waste Management Regulation) and, where needed, laboratory analysis. Our team will help you with this.")}</p></details>
 <details><summary>{T("Teklif nasıl alabilirim?", "How can I get a quote?")}</summary><p>{T("İletişim sayfasındaki formu doldurmanız veya bizi aramanız yeterlidir.", "Just fill in the form on the contact page or call us.")}</p></details>
 </div></section>
-{band}""")
+{gallery}{band}""")
 
     bodies["hizmetler"] = (hero(T("Hizmetlerimiz", "Our Services"), T("Atığın oluştuğu yerden bertaraf tesisine kadar eksiksiz çözümler.", "Complete solutions from the point of generation to the disposal facility.")), f"""
 <section><div class="wrap"><div class="grid g2">
