@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://hanatik.com.tr/sitemap.xml
