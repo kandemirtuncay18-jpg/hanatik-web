@@ -1,0 +1,35 @@
+backend:
+  name: github
+  repo: kandemirtuncay18-jpg/hanatik-web
+  branch: main
+
+locale: tr
+media_folder: assets
+public_folder: /assets
+
+collections:
+  - name: ayarlar
+    label: Site Ayarları
+    files:
+      - name: site
+        label: Firma Bilgileri
+        file: content/site.json
+        format: json
+        fields:
+          - { name: phone, label: Telefon, widget: string, required: false, hint: "Örn. +90 212 000 00 00" }
+          - { name: email, label: E-posta, widget: string, required: false }
+          - { name: address, label: Adres, widget: text, required: false, hint: "Dolunca Google Harita otomatik görünür." }
+          - { name: maps_query, label: Harita arama ifadesi (isteğe bağlı), widget: string, required: false, hint: "Boşsa adres kullanılır." }
+          - { name: founded, label: Kuruluş yılı, widget: string, required: false }
+          - { name: hours_tr, label: Çalışma saatleri (Türkçe), widget: string }
+          - { name: hours_en, label: Çalışma saatleri (İngilizce), widget: string }
+          - { name: form_key, label: Web3Forms erişim anahtarı, widget: string, required: false, hint: "web3forms.com üzerinden e-postanıza gelir. Doluyken formlar doğrudan e-postaya gider." }
+          - { name: site_url, label: Site adresi, widget: string, hint: "Alan adı bağlanınca değiştirin (sonunda / olmasın)." }
+          - name: documents
+            label: Belgeler ve lisanslar
+            widget: list
+            summary: "{{fields.title_tr}}"
+            fields:
+              - { name: title_tr, label: Başlık (Türkçe), widget: string }
+              - { name: title_en, label: Başlık (İngilizce), widget: string }
+              - { name: details, label: Belge no / geçerlilik tarihi, widget: string, required: false }

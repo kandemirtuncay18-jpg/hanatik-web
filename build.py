@@ -20,6 +20,19 @@ MAPS_QUERY = ""                          # boşsa ADDRESS kullanılır. Google M
 # ====================================================================
 
 OUT = pathlib.Path(__file__).parent
+
+# content/site.json (CMS panelinden düzenlenir) yukarıdaki değerleri geçersiz kılar
+_site = OUT / "content" / "site.json"
+DATA = json.loads(_site.read_text(encoding="utf-8")) if _site.exists() else {}
+SITE_URL = (DATA.get("site_url") or SITE_URL).rstrip("/")
+PHONE = DATA.get("phone") or PHONE
+EMAIL = DATA.get("email") or EMAIL
+ADDRESS = DATA.get("address") or ADDRESS
+HOURS_TR = DATA.get("hours_tr") or HOURS_TR
+HOURS_EN = DATA.get("hours_en") or HOURS_EN
+FOUNDED = DATA.get("founded") or FOUNDED
+MAPS_QUERY = DATA.get("maps_query") or MAPS_QUERY
+FORM_KEY = DATA.get("form_key") or ""   # Web3Forms access key (herkese açık anahtardır)
 NAME = "HAN ATIK A.Ş."
 FULL = "HAN ATIK YÖNETİMİ ÇEVRE İNŞAAT SANAYİ VE TİCARET ANONİM ŞİRKETİ"
 FULL_EN = "HAN WASTE MANAGEMENT ENVIRONMENT CONSTRUCTION INDUSTRY AND TRADE INC."
@@ -188,13 +201,13 @@ def build_lang(lang):
 {card("🤝", T("Güven", "Trust"), T("Şeffaf süreç, zamanında hizmet.", "Transparent process, on-time service."))}
 </div></div></section>{band}""")
 
-    docs = [("📜", T("Atık Toplama/Taşıma Lisansı", "Waste Collection/Transport Licence")), ("🏛️", T("Çevre İzin ve Lisans Belgesi", "Environmental Permit & Licence")),
-            ("🚛", "ADR / SRC"), ("✅", "ISO 14001"), ("🦺", "ISO 45001"), ("⭐", "ISO 9001")]
+    docs = [("📜", d.get("title_en") if en else d.get("title_tr"), d.get("details", ""))
+            for d in DATA.get("documents", [])]
     bodies["belgeler"] = (hero(T("Belgeler &amp; Lisanslar", "Certificates &amp; Licences"), T("Yetkili ve belgeli hizmet anlayışı.", "Authorised and documented service.")), f"""
 <section><div class="wrap">
 <span class="eyebrow">{T("Lisans &amp; Belgeler", "Licences &amp; Certificates")}</span><h2>{T("Yetkilerimiz ve belgelerimiz", "Our authorisations and certificates")}</h2>
 <p class="lead">{T("Atık sektöründe güven, belgelerle başlar. Aşağıdaki alanlar şirket belgeleri hazır olduğunda doldurulacaktır.", "In the waste sector, trust starts with documents. The fields below will be completed once the company documents are ready.")}</p>
-<div class="grid g3">{"".join(card(i, t, PH("belge no / geçerlilik tarihi", "document no. / validity")) for i, t in docs)}</div></div></section>{band}""")
+<div class="grid g3">{"".join(card(i, t, det or PH("belge no / geçerlilik tarihi", "document no. / validity")) for i, t, det in docs)}</div></div></section>{band}""")
 
     sp = [("⚽", T("Spor", "Sports"), T("Yerel spor kulüplerine ve amatör takımlara destek.", "Support for local sports clubs and amateur teams.")),
           ("🌳", T("Çevre &amp; Doğa", "Environment &amp; Nature"), T("Ağaçlandırma, kıyı/doğa temizliği ve sıfır atık projeleri.", "Tree planting, shoreline/nature clean-ups and zero-waste projects.")),
@@ -255,13 +268,13 @@ def build_lang(lang):
 <p><b>Veri sorumlusu:</b> {FULL}</p>
 <p>Bu web sitesindeki teklif ve sponsorluk formları aracılığıyla ilettiğiniz ad-soyad, firma, telefon, e-posta, konum ve mesaj bilgileri; talebinizi değerlendirmek, size teklif sunmak ve sizinle iletişime geçmek amacıyla, 6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında işlenir.</p>
 <p>Verileriniz hukuki yükümlülükler dışında üçüncü kişilerle paylaşılmaz. Kanun'un 11. maddesi kapsamında verilerinize erişme, düzeltme, silme ve itiraz haklarınız saklıdır; taleplerinizi {EMAIL or PH("e-posta")} adresine iletebilirsiniz.</p>
-<p>Bu site çerez veya izleme aracı kullanmamaktadır. Google Haritalar gömülü harita Google'a ait içerik yükleyebilir.</p>
+<p>Formlar, iletinin e-postamıza ulaştırılması için Web3Forms hizmeti üzerinden gönderilebilir. Bu site çerez veya izleme aracı kullanmamaktadır. Google Haritalar gömülü harita Google'a ait içerik yükleyebilir.</p>
 <p class="note">Not: Bu metin genel bir şablondur; yayına almadan önce şirketin hukuk danışmanı tarafından gözden geçirilmelidir.</p>"""
     kvkk_en = f"""<h2>Privacy Notice</h2>
 <p><b>Data controller:</b> {FULL_EN}</p>
 <p>The name, company, phone, e-mail, location and message details you send via the quote and sponsorship forms on this website are processed to evaluate your request, provide a quote and contact you, in line with Turkish Law No. 6698 on the Protection of Personal Data.</p>
 <p>Your data is not shared with third parties except where legally required. You may request access, correction, deletion or object to processing by writing to {EMAIL or PH("e-mail")}.</p>
-<p>This site does not use cookies or tracking tools. The embedded Google Map may load content from Google.</p>
+<p>Forms may be delivered to our e-mail through the Web3Forms service. This site does not use cookies or tracking tools. The embedded Google Map may load content from Google.</p>
 <p class="note">Note: this is a generic template and should be reviewed by the company's legal counsel before going live.</p>"""
     bodies["kvkk"] = (hero(T("KVKK &amp; Gizlilik", "Privacy"), T("Kişisel verilerinizin korunması bizim için önemlidir.", "Protecting your personal data matters to us.")),
                       f'<section><div class="wrap" style="max-width:800px">{kvkk_en if en else kvkk_tr}</div></section>')
@@ -326,7 +339,7 @@ def build_lang(lang):
   <div class="copy">© 2026 {full}. {T("Tüm hakları saklıdır.", "All rights reserved.")}</div>
 </div></footer>
 <a class="wa" href="{tel_href}">📞 {T("Acil Hat", "Emergency")}</a>
-<script>window.HAN_MAIL="{sub_to}";</script>
+<script>window.HAN_MAIL="{sub_to}";window.HAN_FORM_KEY="{FORM_KEY}";</script>
 <script src="{root}script.js"></script>
 </body></html>"""
 

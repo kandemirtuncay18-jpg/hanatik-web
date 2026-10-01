@@ -1,0 +1,43 @@
+{
+  "site_url": "https://kandemirtuncay18-jpg.github.io/hanatik-web",
+  "phone": "",
+  "email": "",
+  "address": "",
+  "founded": "",
+  "hours_tr": "Pzt–Cmt 08:30–18:00",
+  "hours_en": "Mon–Sat 08:30–18:00",
+  "maps_query": "",
+  "form_key": "",
+  "documents": [
+    {
+      "title_tr": "Atık Toplama/Taşıma Lisansı",
+      "title_en": "Waste Collection/Transport Licence",
+      "details": ""
+    },
+    {
+      "title_tr": "Çevre İzin ve Lisans Belgesi",
+      "title_en": "Environmental Permit & Licence",
+      "details": ""
+    },
+    {
+      "title_tr": "ADR / SRC",
+      "title_en": "ADR / SRC",
+      "details": ""
+    },
+    {
+      "title_tr": "ISO 14001",
+      "title_en": "ISO 14001",
+      "details": ""
+    },
+    {
+      "title_tr": "ISO 45001",
+      "title_en": "ISO 45001",
+      "details": ""
+    },
+    {
+      "title_tr": "ISO 9001",
+      "title_en": "ISO 9001",
+      "details": ""
+    }
+  ]
+}
