@@ -69,7 +69,9 @@ def build_lang(lang):
     T = lambda tr, e: e if en else tr
     root = "../" if en else ""
     _lf = logo_file()
-    FAVICON = (f'<link rel="icon" href="{root}assets/{_lf}">' if _lf else f'<link rel="icon" href="{root}favicon.svg" type="image/svg+xml">')
+    FAVICON = (f'<link rel="icon" type="image/png" href="{root}assets/favicon-192.png"><link rel="apple-touch-icon" href="{root}assets/favicon-192.png">' if asset("favicon-192.png") else f'<link rel="icon" href="{root}assets/{_lf}">' if _lf else f'<link rel="icon" href="{root}favicon.svg" type="image/svg+xml">')
+    OG_IMG = f'<meta property="og:image" content="{SITE_URL}/assets/og-image.png">' if asset("og-image.png") else ""
+    LOGO_TEXT = "" if _lf else f'<span>HAN ATIK<small>{T("ATIK YÖNETİMİ · ÇEVRE", "WASTE MANAGEMENT · ENVIRONMENT")}</small></span>'
     LOGO_HTML = (f'<img class="logo-img" src="{root}assets/{_lf}" alt="HAN ATIK logo" height="40">' if _lf else '<span class="mark">H</span>')
     PH = lambda tr, e=None: f'<span class="placeholder">[{T(tr, e or tr)}]</span>'
 
@@ -340,7 +342,7 @@ def build_lang(lang):
         alt_en = f"{SITE_URL}/en/{'' if key == 'index' else slug(key, 'en')}"
         ld = {"@context": "https://schema.org", "@type": "LocalBusiness", "name": NAME, "legalName": FULL,
               "url": SITE_URL, "description": T("Tehlikeli ve tehlikesiz atık nakliyesi ve atık yönetimi", "Hazardous and non-hazardous waste transport and waste management"),
-              "areaServed": "TR", "knowsAbout": ["Hazardous waste", "Waste transport", "Recycling"]}
+              "areaServed": "TR", **({"logo": f"{SITE_URL}/assets/logo.png"} if asset("logo.png") else {}), "knowsAbout": ["Hazardous waste", "Waste transport", "Recycling"]}
         if PHONE: ld["telephone"] = PHONE
         if EMAIL: ld["email"] = EMAIL
         if ADDRESS: ld["address"] = ADDRESS
@@ -358,6 +360,7 @@ def build_lang(lang):
 <meta property="og:title" content="{title} | {NAME}">
 <meta property="og:description" content="{desc}">
 <meta property="og:type" content="website">
+{OG_IMG}
 <meta property="og:url" content="{url}">
 <meta property="og:locale" content="{'en_US' if en else 'tr_TR'}">
 <meta name="theme-color" content="#14532d">
@@ -374,7 +377,7 @@ def build_lang(lang):
   <span>{T("7/24 Acil Hat", "24/7 Emergency")}: <b>{phone}</b> · <a class="lang" href="{sw}" hreflang="{other}">{'TR 🇹🇷' if en else 'EN 🇬🇧'}</a></span>
 </div></div>
 <header><div class="wrap">
-  <a class="logo" href="{link('index')}">{LOGO_HTML}<span>HAN ATIK<small>{T("ATIK YÖNETİMİ · ÇEVRE", "WASTE MANAGEMENT · ENVIRONMENT")}</small></span></a>
+  <a class="logo" href="{link('index')}">{LOGO_HTML}{LOGO_TEXT}</a>
   <button class="burger" aria-label="Menu">☰</button>
   <nav><ul>{nav}<li><a class="cta" href="{link('iletisim')}#teklif">{T("Teklif Al", "Get a Quote")}</a></li></ul></nav>
 </div></header>
