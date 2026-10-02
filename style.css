@@ -168,3 +168,8 @@ nav a{padding:8px 11px}
 .tf-stage h3{font-size:1.35rem}
 .tf-dots{margin:6px 0 10px}
 @media(prefers-reduced-motion:reduce){.tf-canvas{display:none}.tf-wrap{height:auto;padding:0 20px}.tf-foot{max-width:640px}}
+
+/* hero video: okunabilirlik için koyu degrade katman */
+.hero.has-video .hero-video{opacity:.75}
+.hero.has-video::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,28,15,.88) 0%,rgba(6,28,15,.55) 55%,rgba(6,28,15,.25) 100%);pointer-events:none}
+.hero.has-video .wrap{z-index:2}
