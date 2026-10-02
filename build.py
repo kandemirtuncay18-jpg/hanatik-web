@@ -117,7 +117,19 @@ def build_lang(lang):
     gallery = (f'''<section><div class="wrap"><span class="eyebrow">{T("Galeri", "Gallery")}</span><h2>{T("Çalışmalarımızdan", "From our work")}</h2>
 <div class="gallery">{"".join(f'<img src="{root}assets/{g}" alt="{NAME} - {T("atık yönetimi", "waste management")}" loading="lazy">' for g in gl)}</div></div></section>''') if gl else ""
 
+    tf_stages = [("🗑️", T("Atık", "Waste"), T("Üretim ve faaliyetler sonucu atık oluşur. Doğru sınıflandırma, doğru çözümün ilk adımıdır.", "Production and daily operations create waste. Correct classification is the first step to the right solution.")),
+                 ("🚛", T("Güvenli Toplama &amp; Nakliye", "Safe Collection &amp; Transport"), T("Atık, uygun ambalaj ve ADR uyumlu araçlarla kaynağından alınır.", "Waste is collected at source with suitable packaging and ADR-compliant vehicles.")),
+                 ("⚙️", T("Ayrıştırma &amp; İşleme", "Sorting &amp; Processing"), T("Lisanslı tesislerde ayrıştırılır; geri kazanılabilenler ayrılır, kalanlar güvenle bertaraf edilir.", "Sorted at licensed facilities: recoverable material is separated and the rest is safely disposed of.")),
+                 ("🌱", T("Geri Kazanım", "Recovery"), T("Atık yeniden hammaddeye ve enerjiye dönüşür. Çevre korunur, ekonomiye değer kazandırılır.", "Waste becomes raw material and energy again. The environment is protected and value returns to the economy."))]
+    tf_html = "".join(f'<div class="tf-stage" data-i="{i}"><div class="tf-ic">{ic}</div><h3>{t}</h3><p>{d}</p></div>' for i, (ic, t, d) in enumerate(tf_stages))
+    tf_dots = "".join(f'<span data-i="{i}"></span>' for i in range(len(tf_stages)))
+    transform = f'''<section class="transform" id="donusum" aria-label="{T("Atıktan geri kazanıma dönüşüm", "From waste to recovery")}"><div class="tf-sticky">
+<div class="tf-wrap"><span class="eyebrow">{T("Dönüşüm", "Transformation")}</span><h2>{T("Atıktan geri kazanıma", "From waste to recovery")}</h2>
+<div class="tf-stages">{tf_html}</div><div class="tf-dots">{tf_dots}</div>
+<p class="tf-hint">{T("Aşağı kaydırın ↓", "Scroll down ↓")}</p></div></div></section>'''
+
     bodies["index"] = (home_hero, f"""
+{transform}
 <section><div class="wrap">
 <span class="eyebrow">{T("Hizmetlerimiz", "Our Services")}</span><h2>{T("Uçtan uca atık yönetimi", "End-to-end waste management")}</h2>
 <p class="lead">{T("Atığın oluştuğu yerden nihai bertaraf veya geri kazanım tesisine kadar tüm süreci tek çatı altında yönetiyoruz.",
