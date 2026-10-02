@@ -156,3 +156,15 @@ nav a{padding:8px 11px}
 .tf-dots span.on{background:var(--orange)}
 .tf-hint{font-size:.85rem;color:#b9d6c0}
 @media(prefers-reduced-motion:reduce){.transform{height:auto;background:#14532d}.tf-sticky{position:static;height:auto;padding:56px 0}.tf-stages{height:auto}.tf-stage{position:static;opacity:1;transform:none;margin-bottom:28px}.tf-dots,.tf-hint{display:none}}
+
+/* dönüşüm: canvas düzeni */
+.tf-sticky{display:block}
+.tf-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.tf-wrap{height:100%;max-width:none;width:100%;display:flex;flex-direction:column;justify-content:space-between;padding:96px 20px 34px;pointer-events:none}
+.tf-head h2{margin:4px 0 0}
+.tf-foot{max-width:640px;margin:0 auto}
+.tf-stages{height:150px}
+.tf-ic{font-size:2rem;margin-bottom:6px}
+.tf-stage h3{font-size:1.35rem}
+.tf-dots{margin:6px 0 10px}
+@media(prefers-reduced-motion:reduce){.tf-canvas{display:none}.tf-wrap{height:auto;padding:0 20px}.tf-foot{max-width:640px}}

@@ -53,25 +53,3 @@ function wire(id, subject) {
 }
 wire('teklif', 'Teklif Talebi / Quote Request');
 wire('sponsor', 'Sponsorluk Başvurusu / Sponsorship Request');
-
-// Dönüşüm bölümü: kaydırma ilerlemesini --p olarak yazar ve aşamayı değiştirir
-(function () {
-  const sec = document.getElementById('donusum');
-  if (!sec || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const stages = sec.querySelectorAll('.tf-stage');
-  const dots = sec.querySelectorAll('.tf-dots span');
-  let tick = false;
-  function update() {
-    tick = false;
-    const r = sec.getBoundingClientRect();
-    const span = r.height - innerHeight;
-    const p = Math.min(1, Math.max(0, -r.top / span));
-    sec.style.setProperty('--p', p.toFixed(3));
-    const idx = Math.min(stages.length - 1, Math.floor(p * stages.length));
-    stages.forEach((el, i) => el.classList.toggle('on', i === idx));
-    dots.forEach((el, i) => el.classList.toggle('on', i <= idx));
-  }
-  addEventListener('scroll', () => { if (!tick) { tick = true; requestAnimationFrame(update); } }, { passive: true });
-  addEventListener('resize', update);
-  update();
-})();

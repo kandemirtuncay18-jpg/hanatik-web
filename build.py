@@ -123,10 +123,14 @@ def build_lang(lang):
                  ("🌱", T("Geri Kazanım", "Recovery"), T("Atık yeniden hammaddeye ve enerjiye dönüşür. Çevre korunur, ekonomiye değer kazandırılır.", "Waste becomes raw material and energy again. The environment is protected and value returns to the economy."))]
     tf_html = "".join(f'<div class="tf-stage" data-i="{i}"><div class="tf-ic">{ic}</div><h3>{t}</h3><p>{d}</p></div>' for i, (ic, t, d) in enumerate(tf_stages))
     tf_dots = "".join(f'<span data-i="{i}"></span>' for i in range(len(tf_stages)))
+    frames_dir = OUT / "assets" / "frames"
+    frames = sorted(f.name for f in frames_dir.glob("*") if f.suffix.lower() in (".jpg", ".jpeg", ".webp", ".png")) if frames_dir.exists() else []
+    frames_js = f'<script>window.HAN_FRAMES={json.dumps([root + "assets/frames/" + f for f in frames])};</script>' if frames else ""
     transform = f'''<section class="transform" id="donusum" aria-label="{T("Atıktan geri kazanıma dönüşüm", "From waste to recovery")}"><div class="tf-sticky">
-<div class="tf-wrap"><span class="eyebrow">{T("Dönüşüm", "Transformation")}</span><h2>{T("Atıktan geri kazanıma", "From waste to recovery")}</h2>
-<div class="tf-stages">{tf_html}</div><div class="tf-dots">{tf_dots}</div>
-<p class="tf-hint">{T("Aşağı kaydırın ↓", "Scroll down ↓")}</p></div></div></section>'''
+<canvas class="tf-canvas" aria-hidden="true"></canvas>
+<div class="tf-wrap"><div class="tf-head"><span class="eyebrow">{T("Dönüşüm", "Transformation")}</span><h2>{T("Atıktan geri kazanıma", "From waste to recovery")}</h2></div>
+<div class="tf-foot"><div class="tf-stages">{tf_html}</div><div class="tf-dots">{tf_dots}</div>
+<p class="tf-hint">{T("Aşağı kaydırın ↓", "Scroll down ↓")}</p></div></div></div>{frames_js}<script src="{root}transform.js" defer></script></section>'''
 
     bodies["index"] = (home_hero, f"""
 {transform}
