@@ -203,3 +203,11 @@ nav a{padding:8px 11px}
 }
 
 .logo-img{height:40px;width:auto;max-width:180px;object-fit:contain;display:block}
+
+/* yazı tipleri: Outfit (başlık/logo) + Inter (metin), kendi sunucumuzdan */
+body{font-family:'Inter',system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+h1,h2,h3,h4,.logo,.btn,nav a,.eyebrow,.badge,.sc-num,.sc-step h3,.strip div{font-family:'Outfit','Inter',system-ui,sans-serif}
+h1,h2{letter-spacing:-.015em}
+.logo{font-weight:800;letter-spacing:.01em}
+.logo small{font-family:'Inter',system-ui,sans-serif}
+.btn,nav a{font-weight:600}

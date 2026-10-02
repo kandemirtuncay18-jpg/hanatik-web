@@ -362,6 +362,9 @@ def build_lang(lang):
 <meta property="og:locale" content="{'en_US' if en else 'tr_TR'}">
 <meta name="theme-color" content="#14532d">
 {FAVICON}
+<link rel="preload" href="{root}assets/fonts/outfit-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{root}assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{root}fonts.css">
 <link rel="stylesheet" href="{root}style.css">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
 </head>
