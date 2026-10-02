@@ -201,3 +201,5 @@ nav a{padding:8px 11px}
   .sc-steps{position:static;height:auto;margin-top:30px}
   .sc-step{position:static;opacity:1;transform:none;margin-bottom:22px}
 }
+
+.logo-img{height:40px;width:auto;max-width:180px;object-fit:contain;display:block}

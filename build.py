@@ -48,6 +48,14 @@ def slug(key, lang):
     return f"{EN_SLUG[key] if lang == 'en' else key}.html"
 
 
+def logo_file():
+    """assets/logo.(svg|png|webp|jpg) varsa dosya adını döndürür."""
+    for ext in ("svg", "png", "webp", "jpg", "jpeg"):
+        if asset(f"logo.{ext}"):
+            return f"logo.{ext}"
+    return None
+
+
 def asset(name):
     return (OUT / "assets" / name).exists()
 
@@ -60,6 +68,9 @@ def build_lang(lang):
     en = lang == "en"
     T = lambda tr, e: e if en else tr
     root = "../" if en else ""
+    _lf = logo_file()
+    FAVICON = (f'<link rel="icon" href="{root}assets/{_lf}">' if _lf else f'<link rel="icon" href="{root}favicon.svg" type="image/svg+xml">')
+    LOGO_HTML = (f'<img class="logo-img" src="{root}assets/{_lf}" alt="HAN ATIK logo" height="40">' if _lf else '<span class="mark">H</span>')
     PH = lambda tr, e=None: f'<span class="placeholder">[{T(tr, e or tr)}]</span>'
 
     phone = PHONE or PH("telefon", "phone")
@@ -350,7 +361,7 @@ def build_lang(lang):
 <meta property="og:url" content="{url}">
 <meta property="og:locale" content="{'en_US' if en else 'tr_TR'}">
 <meta name="theme-color" content="#14532d">
-<link rel="icon" href="{root}favicon.svg" type="image/svg+xml">
+{FAVICON}
 <link rel="stylesheet" href="{root}style.css">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
 </head>
@@ -360,7 +371,7 @@ def build_lang(lang):
   <span>{T("7/24 Acil Hat", "24/7 Emergency")}: <b>{phone}</b> · <a class="lang" href="{sw}" hreflang="{other}">{'TR 🇹🇷' if en else 'EN 🇬🇧'}</a></span>
 </div></div>
 <header><div class="wrap">
-  <a class="logo" href="{link('index')}"><span class="mark">H</span><span>HAN ATIK<small>{T("ATIK YÖNETİMİ · ÇEVRE", "WASTE MANAGEMENT · ENVIRONMENT")}</small></span></a>
+  <a class="logo" href="{link('index')}">{LOGO_HTML}<span>HAN ATIK<small>{T("ATIK YÖNETİMİ · ÇEVRE", "WASTE MANAGEMENT · ENVIRONMENT")}</small></span></a>
   <button class="burger" aria-label="Menu">☰</button>
   <nav><ul>{nav}<li><a class="cta" href="{link('iletisim')}#teklif">{T("Teklif Al", "Get a Quote")}</a></li></ul></nav>
 </div></header>
