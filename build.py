@@ -106,6 +106,28 @@ def build_lang(lang):
 <div>🛡️ {T("İş Sağlığı &amp; Güvenliği", "Health &amp; Safety")}<small>{T("Eğitimli ekip", "Trained crew")}</small></div>
 <div>🌍 {T("Çevreye Duyarlı", "Eco-Conscious")}<small>{T("Geri kazanım odaklı", "Recovery-focused")}</small></div></div></div>"""
 
+    scene_dir = OUT / "assets" / "scene"
+    sframes = sorted(f.name for f in scene_dir.glob("f*.jpg")) if scene_dir.exists() else []
+    scene_steps = [(T("Fabrikaya Geliş", "Arrival at the Factory"), T("Kayar kasalı aracımız atık toplama noktasına ulaşır.", "Our hook-lift truck reaches the waste collection point.")),
+                   (T("Boş Kasa Teslimi", "Empty Container Drop-off"), T("Hidrolik sistem boş kasayı zemine bırakır, araç ayrılır.", "The hydraulic system lowers the empty container to the ground and the truck pulls away.")),
+                   (T("Atık Dolumu", "Waste Loading"), T("Fabrika ekipleri kasayı endüstriyel atıkla doldurur.", "Factory crews fill the container with industrial waste.")),
+                   (T("Dolu Kasanın Alınması", "Loaded Container Pick-up"), T("Araç geri gelir, dolu kasa güvenle yüklenip sabitlenir.", "The truck returns and the full container is safely loaded and secured.")),
+                   (T("Güvenli Nakliye", "Safe Transport"), T("Yüklü araç atığı sanayi yolunda tesise taşır.", "The loaded truck carries the waste to the facility along the industrial road.")),
+                   (T("Tesise Teslim", "Delivery to the Facility"), T("Atık, türüne uygun tesise teslim edilir.", "The waste is delivered to a facility suited to its type."))]
+    if sframes:
+        steps_html = "".join(f'<div class="sc-step" data-i="{i}"><span class="sc-num">0{i + 1} / 0{len(scene_steps)}</span><h3>{t}</h3><p>{d}</p></div>' for i, (t, d) in enumerate(scene_steps))
+        scene_html = f'''<section class="scene" id="sahne" aria-label="{T("Atık toplama ve taşıma süreci", "Waste collection and transport process")}"><div class="sc-sticky">
+<canvas class="sc-canvas" aria-hidden="true"></canvas><div class="sc-shade"></div>
+<div class="sc-intro"><div class="wrap"><span class="badge">{T("Tehlikeli &amp; Tehlikesiz Atık Çözümleri", "Hazardous &amp; Non-Hazardous Waste Solutions")}</span>
+<h1>{T("Atıklarınız güvenli ellerde: toplama, nakliye, bertaraf.", "Your waste in safe hands: collection, transport, disposal.")}</h1>
+<p>{T("Kayar kasalı araçlarımızla fabrikanızdan tesise, mevzuata uygun atık nakliyesi.", "Compliant waste transport with our hook-lift trucks, from your factory to the facility.")}</p>
+<div class="btns"><a class="btn btn-primary" href="{link('iletisim')}#teklif">{T("Teklif Al", "Get a Quote")}</a>
+<a class="btn btn-ghost" href="{link('hizmetler')}">{T("Hizmetlerimiz", "Our Services")}</a></div></div></div>
+<div class="sc-steps wrap">{steps_html}<div class="sc-bar"><i></i></div></div>
+<p class="sc-hint">{T("Aşağı kaydırın ↓", "Scroll down ↓")}</p></div>
+<script>window.HAN_SCENE={json.dumps([root + "assets/scene/" + f for f in sframes])};</script><script src="{root}scene.js" defer></script></section>'''
+        home_hero = scene_html + home_hero[home_hero.index('<div class="strip">'):]
+
     steps = [(T("Talep", "Request"), T("Atık türü ve miktarı bildirilir.", "Waste type and volume are reported.")),
              (T("Analiz", "Analysis"), T("Atık sınıflandırılır, kod belirlenir.", "Waste is classified and coded.")),
              (T("Toplama", "Collection"), T("Uygun ambalaj ve araçla toplanır.", "Collected with suitable packaging and vehicles.")),

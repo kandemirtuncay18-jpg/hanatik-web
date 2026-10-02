@@ -173,3 +173,31 @@ nav a{padding:8px 11px}
 .hero.has-video .hero-video{opacity:.75}
 .hero.has-video::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,28,15,.88) 0%,rgba(6,28,15,.55) 55%,rgba(6,28,15,.25) 100%);pointer-events:none}
 .hero.has-video .wrap{z-index:2}
+
+/* ana sayfa sahnesi */
+.scene{height:760vh;position:relative;background:#0a2816;padding:0}
+.sc-sticky{position:sticky;top:0;height:100vh;overflow:hidden;color:#fff}
+.sc-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.sc-shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(6,28,15,.85) 0%,rgba(6,28,15,.45) 50%,rgba(6,28,15,.1) 100%),linear-gradient(0deg,rgba(6,28,15,.75) 0%,transparent 40%)}
+.sc-intro{position:absolute;inset:0;display:flex;align-items:center;z-index:2;transition:opacity .15s}
+.sc-intro h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.15;max-width:720px;margin-bottom:16px}
+.sc-intro p{font-size:1.15rem;max-width:560px;color:#d1e7d6;margin-bottom:26px}
+.sc-intro .btns{display:flex;gap:14px;flex-wrap:wrap}
+.sc-steps{position:absolute;left:0;right:0;bottom:56px;z-index:2;height:190px}
+.sc-step{position:absolute;left:20px;right:20px;bottom:30px;max-width:520px;opacity:0;transform:translateY(22px);transition:.5s;pointer-events:none}
+.sc-step.on{opacity:1;transform:none}
+.sc-num{color:#fdba74;font-weight:800;letter-spacing:.1em;font-size:.85rem}
+.sc-step h3{font-size:1.7rem;margin:4px 0 6px}
+.sc-step p{color:#e2efe5}
+.sc-bar{position:absolute;left:20px;bottom:0;width:min(520px,calc(100% - 40px));height:4px;background:rgba(255,255,255,.25);border-radius:2px;overflow:hidden}
+.sc-bar i{display:block;height:100%;width:0;background:var(--orange)}
+.sc-hint{position:absolute;right:24px;bottom:22px;z-index:2;font-size:.85rem;color:#cfe5d4}
+@media(max-width:600px){.sc-step h3{font-size:1.35rem}.sc-hint{display:none}}
+@media(prefers-reduced-motion:reduce){
+  .scene{height:auto;background:#14532d}
+  .sc-sticky{position:static;height:auto;padding:70px 0 40px}
+  .sc-canvas,.sc-shade,.sc-hint,.sc-bar{display:none}
+  .sc-intro{position:static;opacity:1!important}
+  .sc-steps{position:static;height:auto;margin-top:30px}
+  .sc-step{position:static;opacity:1;transform:none;margin-bottom:22px}
+}
