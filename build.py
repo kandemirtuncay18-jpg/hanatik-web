@@ -127,18 +127,18 @@ def build_lang(lang):
                    (T("Dolu Kasanın Alınması", "Loaded Container Pick-up"), T("Araç geri gelir, dolu kasa güvenle yüklenip sabitlenir.", "The truck returns and the full container is safely loaded and secured.")),
                    (T("Güvenli Nakliye", "Safe Transport"), T("Yüklü araç atığı sanayi yolunda tesise taşır.", "The loaded truck carries the waste to the facility along the industrial road.")),
                    (T("Tesise Teslim", "Delivery to the Facility"), T("Atık, türüne uygun tesise teslim edilir.", "The waste is delivered to a facility suited to its type."))]
-    if sframes:
+    if has_vid:
         steps_html = "".join(f'<div class="sc-step" data-i="{i}"><span class="sc-num">0{i + 1} / 0{len(scene_steps)}</span><h3>{t}</h3><p>{d}</p></div>' for i, (t, d) in enumerate(scene_steps))
         scene_html = f'''<section class="scene" id="sahne" aria-label="{T("Atık toplama ve taşıma süreci", "Waste collection and transport process")}"><div class="sc-sticky">
-<canvas class="sc-canvas" aria-hidden="true"></canvas><div class="sc-shade"></div>
+<video class="sc-video" autoplay muted loop playsinline preload="auto" aria-hidden="true"><source src="{root}assets/hero.mp4" type="video/mp4"></video><div class="sc-shade"></div>
 <div class="sc-intro"><div class="wrap"><span class="badge">{T("Tehlikeli &amp; Tehlikesiz Atık Çözümleri", "Hazardous &amp; Non-Hazardous Waste Solutions")}</span>
 <h1>{T("Atıklarınız güvenli ellerde: toplama, nakliye, bertaraf.", "Your waste in safe hands: collection, transport, disposal.")}</h1>
 <p>{T("Kayar kasalı araçlarımızla fabrikanızdan tesise, mevzuata uygun atık nakliyesi.", "Compliant waste transport with our hook-lift trucks, from your factory to the facility.")}</p>
 <div class="btns"><a class="btn btn-primary" href="{link('iletisim')}#teklif">{T("Teklif Al", "Get a Quote")}</a>
 <a class="btn btn-ghost" href="{link('hizmetler')}">{T("Hizmetlerimiz", "Our Services")}</a></div></div></div>
 <div class="sc-steps wrap">{steps_html}<div class="sc-bar"><i></i></div></div>
-<p class="sc-hint">{T("Aşağı kaydırın ↓", "Scroll down ↓")}</p></div>
-<script>window.HAN_SCENE={json.dumps([root + "assets/scene/" + f for f in sframes])};</script><script src="{root}scene.js" defer></script></section>'''
+</div>
+<script src="{root}scene.js" defer></script></section>'''
         home_hero = scene_html + home_hero[home_hero.index('<div class="strip">'):]
 
     steps = [(T("Talep", "Request"), T("Atık türü ve miktarı bildirilir.", "Waste type and volume are reported.")),
