@@ -24,6 +24,8 @@ OUT = pathlib.Path(__file__).parent
 # content/site.json (CMS panelinden düzenlenir) yukarıdaki değerleri geçersiz kılar
 _site = OUT / "content" / "site.json"
 DATA = json.loads(_site.read_text(encoding="utf-8")) if _site.exists() else {}
+import hashlib
+BUILD_V = hashlib.md5(b"".join((OUT / f).read_bytes() for f in ["scene.js","transform.js","script.js","style.css"])).hexdigest()[:8]
 SITE_URL = (DATA.get("site_url") or SITE_URL).rstrip("/")
 PHONE = DATA.get("phone") or PHONE
 EMAIL = DATA.get("email") or EMAIL
@@ -138,7 +140,7 @@ def build_lang(lang):
 <a class="btn btn-ghost" href="{link('hizmetler')}">{T("Hizmetlerimiz", "Our Services")}</a></div></div></div>
 <div class="sc-steps wrap">{steps_html}<div class="sc-bar"><i></i></div></div>
 </div>
-<script src="{root}scene.js" defer></script></section>'''
+<script src="{root}scene.js?v={BUILD_V}" defer></script></section>'''
         home_hero = scene_html + home_hero[home_hero.index('<div class="strip">'):]
 
     steps = [(T("Talep", "Request"), T("Atık türü ve miktarı bildirilir.", "Waste type and volume are reported.")),
@@ -165,7 +167,7 @@ def build_lang(lang):
 <canvas class="tf-canvas" aria-hidden="true"></canvas>
 <div class="tf-wrap"><div class="tf-head"><span class="eyebrow">{T("Dönüşüm", "Transformation")}</span><h2>{T("Atıktan geri kazanıma", "From waste to recovery")}</h2></div>
 <div class="tf-foot"><div class="tf-stages">{tf_html}</div><div class="tf-dots">{tf_dots}</div>
-<p class="tf-hint">{T("Aşağı kaydırın ↓", "Scroll down ↓")}</p></div></div></div>{frames_js}<script src="{root}transform.js" defer></script></section>'''
+<p class="tf-hint">{T("Aşağı kaydırın ↓", "Scroll down ↓")}</p></div></div></div>{frames_js}<script src="{root}transform.js?v={BUILD_V}" defer></script></section>'''
 
     bodies["index"] = (home_hero, f"""
 {transform}
@@ -368,7 +370,7 @@ def build_lang(lang):
 <link rel="preload" href="{root}assets/fonts/outfit-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{root}assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{root}fonts.css">
-<link rel="stylesheet" href="{root}style.css">
+<link rel="stylesheet" href="{root}style.css?v={BUILD_V}">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
 </head>
 <body>
@@ -395,7 +397,7 @@ def build_lang(lang):
 </div></footer>
 <a class="wa" href="{tel_href}">📞 {T("Acil Hat", "Emergency")}</a>
 <script>window.HAN_MAIL="{sub_to}";window.HAN_FORM_KEY="{FORM_KEY}";</script>
-<script src="{root}script.js"></script>
+<script src="{root}script.js?v={BUILD_V}"></script>
 </body></html>"""
 
     bodies_title = {"index": T("Ana Sayfa", "Home"), "hizmetler": T("Hizmetler", "Services"), "hakkimizda": T("Hakkımızda", "About"),
