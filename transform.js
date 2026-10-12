@@ -20,19 +20,16 @@
     frames.forEach((im) => { im.src = im.dataset.src; });
   }
 
-  // --- hedef şekil: halka + ok ucu + yaprak (alfa örnekleme) ---
+  // --- hedef şekil: "HAN" yazısı (alfa örnekleme) ---
   function shapePoints(n) {
-    const S = 300, o = document.createElement('canvas');
-    o.width = o.height = S;
+    const SW = 600, SH = 240, o = document.createElement('canvas');
+    o.width = SW; o.height = SH;
     const c = o.getContext('2d');
-    c.fillStyle = '#000'; c.strokeStyle = '#000'; c.lineWidth = 26; c.lineCap = 'round';
-    c.beginPath(); c.arc(S / 2, S / 2, 118, 0.15 * Math.PI, 1.85 * Math.PI); c.stroke();
-    const ex = S / 2 + 118 * Math.cos(1.85 * Math.PI), ey = S / 2 + 118 * Math.sin(1.85 * Math.PI);
-    c.beginPath(); c.moveTo(ex - 14, ey - 24); c.lineTo(ex + 34, ey - 4); c.lineTo(ex - 6, ey + 34); c.fill();
-    c.save(); c.translate(S / 2, S / 2 + 8); c.rotate(-0.6);
-    c.beginPath(); c.ellipse(0, 0, 34, 78, 0, 0, Math.PI * 2); c.fill(); c.restore();
-    const d = c.getImageData(0, 0, S, S).data, pts = [];
-    for (let y = 0; y < S; y += 3) for (let x = 0; x < S; x += 3) if (d[(y * S + x) * 4 + 3] > 128) pts.push([x / S - 0.5, y / S - 0.5]);
+    c.fillStyle = '#000'; c.textAlign = 'center'; c.textBaseline = 'middle';
+    c.font = '800 230px Outfit, Inter, sans-serif';
+    c.fillText('HAN', SW / 2, SH / 2 + 8);
+    const d = c.getImageData(0, 0, SW, SH).data, pts = [];
+    for (let y = 0; y < SH; y += 3) for (let x = 0; x < SW; x += 3) if (d[(y * SW + x) * 4 + 3] > 128) pts.push([x / SW - 0.5, (y - SH / 2) / SW]);
     for (let i = pts.length - 1; i > 0; i--) { const j = (Math.random() * (i + 1)) | 0; [pts[i], pts[j]] = [pts[j], pts[i]]; }
     const out = [];
     for (let i = 0; i < n; i++) out.push(pts[i % pts.length]);
@@ -46,7 +43,7 @@
 
   function build() {
     const n = innerWidth < 700 ? 520 : 1100, target = shapePoints(n);
-    const size = Math.min(W, H) * 0.62, cx = W / 2, cy = H * 0.47;
+    const size = Math.min(W * 0.7, 620), cx = W / 2, cy = H * 0.47;
     parts = [];
     for (let i = 0; i < n; i++) {
       const cat = i % 4, k = (i / 4) | 0, cols = 10;
@@ -114,5 +111,6 @@
   }, { rootMargin: '200px' }).observe(sec);
   addEventListener('resize', resize);
   resize();
+  if (document.fonts && document.fonts.load) document.fonts.load('800 230px Outfit', 'HAN').then(() => { if (!frames.length) build(); });
   update();
 })();
